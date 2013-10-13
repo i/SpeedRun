@@ -20,6 +20,7 @@ var circle;
 var marker;
 var iFrequency = 1000; // expressed in miliseconds
 var myInterval = 0;
+var boundContains = false;
 
 
 var directionsDisplay;
@@ -84,10 +85,10 @@ function checkThisLoc(thisLocation)
     if (status == google.maps.DirectionsStatus.OK) {
       if(response.bounds.contains(thisLocation)
       {
-        return true;
+        boundContains = true;
       }
       else
-        return false;
+        boundContains = false;
     }
   });  
 }
@@ -115,7 +116,8 @@ function doSomething()
       var curLoc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       var someRandomTestLoc = new google.maps.LatLng(40.485820,-74.437888);
       circle.setCenter(curLoc);
-      if(checkThisLoc(someRandomTestLoc))
+      checkThisLoc(someRandomTestLoc);
+      if(boundContains)
       {
         console.log("yes it contains");
       }
