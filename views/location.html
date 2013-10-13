@@ -16,22 +16,22 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script>
 var map;
-//var circle;
+var circle;
 var marker;
-var newLatlng;
-var i = 0;
+var iFrequency = 1000; // expressed in miliseconds
+var myInterval = 0;
 
 function initialize() {
+  var loc = new google.maps.LatLng(40.48,-74.42);
   var mapOptions = {
     zoom: 14,
-    center: new google.maps.LatLng(-34.397, 150.644),
+    center: loc,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
 
 
-  var loc = new google.maps.LatLng(40.48, -74.4349);
   map.setCenter(loc);
 
   var circleOptions = {
@@ -45,11 +45,43 @@ function initialize() {
       radius: 20
   };
 
-  //circle = new google.maps.Circle(circleOptions);
-  updatePos();
+  circle = new google.maps.Circle(circleOptions);
+  startLoop();
 }
 
 
+// STARTS and Resets the loop if any
+function startLoop() {
+    if(myInterval > 0) clearInterval(myInterval);  // stop
+    myInterval = setInterval( "doSomething()", iFrequency );  // run
+}
+
+function doSomething()
+{
+    if(navigator.geolocation)
+    {
+      navigator.geolocation.getCurrentPosition(success, error);
+    } 
+    else 
+    {
+      error('Geo Location is not supported');
+    }
+
+    function success(position)
+    {
+      console.log("doing stuff");
+      circle.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+      console.log("doing sutfff 2");
+    }
+    function error()
+    {
+      console.log("heers my error bitch");
+    }
+}
+
+
+
+/*
 function updatePos(){
 
   var options = {
@@ -80,6 +112,7 @@ function updatePos(){
           'message: ' + error.message + '\n');
       }
 }
+*/
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
