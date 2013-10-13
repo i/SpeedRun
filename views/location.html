@@ -83,12 +83,14 @@ function checkThisLoc(thisLocation)
   };
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
-      if(response.bounds.contains(thisLocation)
+      if(response.bounds.contains(thisLocation))
       {
         boundContains = true;
       }
       else
+      {
         boundContains = false;
+      }
     }
   });  
 }
