@@ -11,7 +11,7 @@ var io = require('socket.io').listen(server);
 
 
 // all environments
-app.set('port', 8080 || process.env.PORT || 8080);
+app.set('port', 9090 || process.env.PORT || 8080);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.favicon());
@@ -28,6 +28,10 @@ if ('development' == app.get('env')) {
 
 app.get('/', function(req, res){
     res.sendfile(__dirname + '/views/index.html');
+});
+
+app.get('/location', function(req,res){
+    res.sendfile(__dirname+ '/views/location.html');
 });
 
 server.listen(app.get('port'), function() {
