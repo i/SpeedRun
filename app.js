@@ -36,19 +36,10 @@ server.listen(app.get('port'), function() {
 
 
 io.sockets.on('connection', function(socket) {
-  socket.emit('test');
-  socket.on('join', function(sessionID) {
+  console.log('someone connected');
 
-    socket.emit('', uid++);
-
-    socket.set('sessionID', sessionID, function() {
-      if (socket.join(sessionID)) {
-        socket.broadcast.to(sessionID).emit('joined', sessionID);
-      }
-    });
-  });
-
-  socket.on('active', function(notes) {
+  socket.on('location', function(loc) {
+    console.log(loc);
   });
 
 });
