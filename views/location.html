@@ -20,6 +20,8 @@ var circle;
 var marker;
 var iFrequency = 1000; // expressed in miliseconds
 var myInterval = 0;
+var routeBounds;
+
 
 var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
@@ -67,6 +69,7 @@ function calcRoute()
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
+      routeBounds = response.bounds;
     }
   });
 }
@@ -91,7 +94,18 @@ function doSomething()
 
     function success(position)
     {
-      circle.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+      var curLoc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      var someRandomTestLoc = new google.maps.LatLng(40.485820,-74.437888);
+      circle.setCenter(curLoc);
+      if(routeBounds.contains(someRandomTestLoc))
+      {
+        console.log("yes it contains");
+      }
+      else
+      {
+        console.log("no it doesnt");
+      }
+
     }
     function error()
     {
