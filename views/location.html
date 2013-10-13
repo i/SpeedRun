@@ -20,7 +20,6 @@ var circle;
 var marker;
 var iFrequency = 1000; // expressed in miliseconds
 var myInterval = 0;
-var routeBounds;
 
 
 var directionsDisplay;
@@ -69,9 +68,28 @@ function calcRoute()
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
-      routeBounds = response.bounds;
     }
   });
+}
+function checkThisLoc(thisLocation)
+{
+  var start = new google.maps.LatLng(40.484955,-74.436300);
+  var end = new google.maps.LatLng(40.486285,-74.438864);
+  var request = {
+      origin:start,
+      destination:end,
+      travelMode: google.maps.DirectionsTravelMode.DRIVING
+  };
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      if(response.bounds.contains(thisLocation)
+      {
+        return true;
+      }
+      else
+        return false;
+    }
+  });  
 }
 
 
@@ -97,7 +115,7 @@ function doSomething()
       var curLoc = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       var someRandomTestLoc = new google.maps.LatLng(40.485820,-74.437888);
       circle.setCenter(curLoc);
-      if(routeBounds.contains(someRandomTestLoc))
+      if(checkThisLoc(someRandomTestLoc))
       {
         console.log("yes it contains");
       }
